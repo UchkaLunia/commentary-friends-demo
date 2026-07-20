@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Commentary Friends Studio — Presentation Demo</title>
+  <style>
+    :root {
+      --background:#f4f2ed; --foreground:#1c2a36; --card:#fffdf9; --card-foreground:#1c2a36;
+      --popover:#fffdf9; --popover-foreground:#1c2a36; --primary:#173f5f; --primary-foreground:#ffffff;
+      --secondary:#e8e5de; --secondary-foreground:#1c2a36; --muted:#eceae5; --muted-foreground:#66727d;
+      --accent:#e4edf3; --accent-foreground:#173f5f; --destructive:#a43d3d; --border:#d7d4cd;
+      --input:#d7d4cd; --ring:#4c86ad; --viz-series-1:#3f7ca4; --viz-series-2:#a66b3f;
+      --viz-series-3:#79589a; --viz-series-4:#bd4d6c; --viz-series-5:#3f786d; --viz-series-6:#a07831;
+      --font-size-base:14px;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--background); color:var(--foreground);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:18px; background:var(--background); color:var(--foreground); }
+    button,input,textarea,select { font:inherit; }
+    button { cursor:pointer; }
+    .demo-banner { max-width:1180px; margin:0 auto 10px; padding:10px 14px; border:1px solid color-mix(in srgb,var(--viz-series-6) 35%,var(--border)); border-radius:12px; background:color-mix(in srgb,var(--viz-series-6) 10%,var(--card)); text-align:center; font-size:12px; font-weight:600; }
+    .btn { min-height:36px; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:7px 11px; border:1px solid var(--border); border-radius:9px; background:var(--card); color:var(--card-foreground); text-decoration:none; }
+    .btn:hover { background:var(--accent); color:var(--accent-foreground); }
+    .btn-primary { border-color:var(--primary); background:var(--primary); color:var(--primary-foreground); }
+    .btn-ghost { background:transparent; }
+    .btn[aria-pressed="true"], .btn[aria-selected="true"] { background:var(--primary); color:var(--primary-foreground); }
+    .btn:disabled { cursor:not-allowed; opacity:.5; }
+    .card { border:1px solid var(--border); border-radius:14px; background:var(--card); color:var(--card-foreground); }
+    .text-small { font-size:12px; }
+    .text-muted { color:var(--muted-foreground); }
+    .viz-badge { display:inline-flex; align-items:center; justify-content:center; min-height:25px; padding:3px 8px; border-radius:999px; background:var(--muted); color:var(--foreground); font-size:11px; font-weight:600; letter-spacing:.04em; }
+    .viz-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:9px; }
+    .viz-row { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .viz-controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+    .form-label { display:grid; gap:5px; margin:11px 0 5px; font-size:12px; font-weight:600; }
+    .form-control,.form-select { width:100%; padding:9px 10px; border:1px solid var(--input); border-radius:8px; background:var(--background); color:var(--foreground); }
+    .form-check { display:flex; align-items:center; gap:7px; margin:8px 0; }
+    .form-check-input { width:16px; height:16px; flex:0 0 auto; }
+    .form-check-label { color:var(--foreground); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (prefers-color-scheme:dark) {
+      :root { --background:#111820; --foreground:#eef2f4; --card:#19242e; --card-foreground:#eef2f4; --popover:#19242e; --popover-foreground:#eef2f4; --muted:#26333d; --muted-foreground:#b0bac2; --accent:#253b4b; --accent-foreground:#eef2f4; --border:#35434e; --input:#45545f; --primary:#d9e7f0; --primary-foreground:#122636; }
+    }
+  </style>
+</head>
+<body>
+<div class="demo-banner">PRESENTATION DEMO · Sample campaign data only · Files remain in the visitor’s browser · Nothing is uploaded or published</div>
+<div id="commentary-studio-prototype">
+  <style>
+    #commentary-studio-prototype {
+      --cf-breda: var(--viz-series-2);
+      --cf-gloria: var(--viz-series-3);
+      --cf-rebeka: var(--viz-series-4);
+      --cf-maks: var(--viz-series-5);
+      color: var(--foreground);
+    }
+    #commentary-studio-prototype * { box-sizing: border-box; }
+    #commentary-studio-prototype .cf-shell {
+      display: grid;
+      grid-template-columns: minmax(170px, 206px) minmax(0, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--background);
+      min-height: 680px;
+    }
+    #commentary-studio-prototype .cf-sidebar {
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--primary) 6%, var(--card)), var(--card) 42%);
+      color: var(--card-foreground);
+      padding: 20px 12px;
+      border-right: 1px solid var(--border);
+    }
+    #commentary-studio-prototype .cf-brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 8px 20px;
+      font-weight: 500;
+      letter-spacing: .03em;
+    }
+    #commentary-studio-prototype .cf-brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      letter-spacing: 0;
+    }
+    #commentary-studio-prototype .cf-brand span {
+      display: block;
+      opacity: .68;
+      font-weight: 400;
+    }
+    #commentary-studio-prototype .cf-nav {
+      display: grid;
+      gap: 5px;
+    }
+    #commentary-studio-prototype .cf-nav-label {
+      padding: 13px 8px 4px;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    #commentary-studio-prototype .cf-nav [aria-current="page"] {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    #commentary-studio-prototype .cf-main {
+      min-width: 0;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--viz-series-1) 4%, transparent), transparent 34%),
+        var(--background);
+    }
+    #commentary-studio-prototype .cf-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px 13px;
+      border-bottom: 1px solid var(--border);
+      background: var(--background);
+    }
+    #commentary-studio-prototype .cf-topbar h2,
+    #commentary-studio-prototype .cf-topbar p { margin: 0; }
+    #commentary-studio-prototype .cf-top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #commentary-studio-prototype .cf-progress-wrap {
+      display: grid;
+      gap: 5px;
+      min-width: 160px;
+    }
+    #commentary-studio-prototype .cf-progress-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted-foreground);
+    }
+    #commentary-studio-prototype .cf-progress {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--muted);
+    }
+    #commentary-studio-prototype .cf-progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--viz-series-1);
+      transition: width .2s ease;
+    }
+    #commentary-studio-prototype .cf-content { padding: 18px 20px 24px; }
+    #commentary-studio-prototype .cf-screen[hidden] { display: none; }
+    #commentary-studio-prototype .cf-section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    #commentary-studio-prototype .cf-section-head h3,
+    #commentary-studio-prototype .cf-section-head p { margin: 0; }
+    #commentary-studio-prototype .cf-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    #commentary-studio-prototype .cf-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    #commentary-studio-prototype .cf-stack { display: grid; gap: 12px; }
+    #commentary-studio-prototype .cf-campaign-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 18px;
+      margin-bottom: 14px;
+      border: 1px solid color-mix(in srgb, var(--viz-series-1) 26%, var(--border));
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--viz-series-1) 7%, var(--card));
+      color: var(--card-foreground);
+    }
+    #commentary-studio-prototype .cf-campaign-hero h3,
+    #commentary-studio-prototype .cf-campaign-hero p { margin: 0; }
+    #commentary-studio-prototype .cf-eyebrow {
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 5px;
+    }
+    #commentary-studio-prototype .cf-card-pad { padding: 16px; }
+    #commentary-studio-prototype .cf-card-pad h3,
+    #commentary-studio-prototype .cf-card-pad h4,
+    #commentary-studio-prototype .cf-card-pad p { margin-top: 0; }
+    #commentary-studio-prototype .cf-spaced { margin-top: 14px; }
+    #commentary-studio-prototype .cf-metric {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    #commentary-studio-prototype .cf-metric span { display: block; }
+    #commentary-studio-prototype .cf-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    #commentary-studio-prototype .cf-row:last-child { border-bottom: 0; }
+    #commentary-studio-prototype .cf-row-main { min-width: 0; }
+    #commentary-studio-prototype .cf-row-main strong,
+    #commentary-studio-prototype .cf-row-main span { display: block; }
+    #commentary-studio-prototype .cf-campaign-table { display: grid; gap: 2px; }
+    #commentary-studio-prototype .cf-campaign-row {
+      display: grid;
+      grid-template-columns: minmax(80px, 1.15fr) repeat(6, minmax(64px, .8fr));
+      gap: 7px;
+      align-items: center;
+      padding: 9px 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    #commentary-studio-prototype .cf-campaign-row.cf-head {
+      color: var(--muted-foreground);
+      font-size: var(--font-size-base);
+    }
+    #commentary-studio-prototype .cf-track-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 500;
+    }
+    #commentary-studio-prototype .cf-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: var(--char);
+    }
+    #commentary-studio-prototype .cf-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--muted);
+      color: var(--muted-foreground);
+      text-align: center;
+    }
+    #commentary-studio-prototype .cf-status.done {
+      background: color-mix(in srgb, var(--viz-series-1) 18%, var(--card));
+      color: var(--card-foreground);
+    }
+    #commentary-studio-prototype .cf-status.wait {
+      background: color-mix(in srgb, var(--viz-series-3) 18%, var(--card));
+      color: var(--card-foreground);
+    }
+    #commentary-studio-prototype .cf-status.error {
+      background: color-mix(in srgb, var(--destructive) 18%, var(--card));
+      color: var(--card-foreground);
+    }
+    #commentary-studio-prototype .cf-character-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+    #commentary-studio-prototype .cf-character-tabs .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    #commentary-studio-prototype .cf-avatar {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--char) 23%, var(--card));
+      color: var(--card-foreground);
+    }
+    #commentary-studio-prototype .cf-editor {
+      min-height: 330px;
+      resize: vertical;
+    }
+    #commentary-studio-prototype .cf-claim {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    #commentary-studio-prototype .cf-claim:last-child { border-bottom: 0; }
+    #commentary-studio-prototype .cf-teleprompter {
+      min-height: 310px;
+      padding: 22px;
+      border-radius: 14px;
+      background: var(--card);
+      color: var(--card-foreground);
+      border: 1px solid var(--border);
+      font-size: calc(var(--font-size-base) * 1.18);
+    }
+    #commentary-studio-prototype .cf-waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      min-height: 105px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    #commentary-studio-prototype .cf-waveform span {
+      width: 4px;
+      height: calc(16px + var(--h) * 1px);
+      max-height: 78px;
+      border-radius: 99px;
+      background: var(--viz-series-1);
+    }
+    #commentary-studio-prototype .cf-portrait-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    #commentary-studio-prototype .cf-portrait {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--muted-foreground) 22%, transparent) 0 13%, transparent 14%),
+        radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--muted-foreground) 18%, transparent) 0 24%, transparent 25%),
+        var(--muted);
+      color: var(--foreground);
+    }
+    #commentary-studio-prototype .cf-portrait.is-selected {
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+    #commentary-studio-prototype .cf-feed-preview {
+      aspect-ratio: 4 / 5;
+      max-width: 310px;
+      margin-inline: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--muted);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+    }
+    #commentary-studio-prototype .cf-overlay {
+      width: 100%;
+      padding: 9px 10px;
+      border-radius: 8px;
+      background: var(--foreground);
+      color: var(--background);
+      text-align: center;
+      font-weight: 500;
+    }
+    #commentary-studio-prototype .cf-dropzone {
+      display: grid;
+      place-items: center;
+      min-height: 220px;
+      padding: 18px;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      text-align: center;
+      background: var(--muted);
+    }
+    #commentary-studio-prototype .cf-video {
+      aspect-ratio: 9 / 16;
+      max-height: 440px;
+      margin-inline: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--muted);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+    }
+    #commentary-studio-prototype .cf-publish-result {
+      border-left: 3px solid var(--viz-series-1);
+      padding: 8px 10px;
+      background: var(--muted);
+      border-radius: 0 10px 10px 0;
+    }
+    #commentary-studio-prototype .cf-inline-note {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--muted);
+      color: var(--foreground);
+    }
+    #commentary-studio-prototype .cf-actionbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    #commentary-studio-prototype .cf-toast {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 5;
+      max-width: 320px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--popover);
+      color: var(--popover-foreground);
+      box-shadow: 0 8px 28px color-mix(in srgb, var(--foreground) 13%, transparent);
+    }
+    #commentary-studio-prototype .cf-shell { position: relative; }
+    #commentary-studio-prototype .cf-muted { color: var(--muted-foreground); }
+    #commentary-studio-prototype .cf-ok { color: var(--foreground); font-weight: 500; }
+    #commentary-studio-prototype .cf-danger { color: var(--destructive); }
+    @media (max-width: 800px) {
+      #commentary-studio-prototype .cf-shell { grid-template-columns: 1fr; }
+      #commentary-studio-prototype .cf-sidebar { padding: 12px; }
+      #commentary-studio-prototype .cf-brand { padding-bottom: 10px; }
+      #commentary-studio-prototype .cf-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      #commentary-studio-prototype .cf-nav-label { display: none; }
+      #commentary-studio-prototype .cf-nav .btn { justify-content: center; }
+      #commentary-studio-prototype .cf-grid-2,
+      #commentary-studio-prototype .cf-grid-3 { grid-template-columns: 1fr; }
+      #commentary-studio-prototype .cf-campaign-row { grid-template-columns: minmax(90px, 1.4fr) repeat(3, 1fr); }
+      #commentary-studio-prototype .cf-campaign-row > :nth-child(n+5) { display: none; }
+      #commentary-studio-prototype .cf-portrait-grid { grid-template-columns: 1fr; }
+      #commentary-studio-prototype .cf-campaign-hero { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      #commentary-studio-prototype .cf-topbar,
+      #commentary-studio-prototype .cf-section-head { flex-direction: column; align-items: stretch; }
+      #commentary-studio-prototype .cf-content { padding-inline: 12px; }
+      #commentary-studio-prototype .cf-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      #commentary-studio-prototype .cf-campaign-row { grid-template-columns: 1fr 1fr; }
+      #commentary-studio-prototype .cf-campaign-row > :nth-child(n+3) { display: none; }
+    }
+  </style>
+
+  <div class="cf-shell">
+    <aside class="cf-sidebar" aria-label="Prototype navigation">
+      <div class="cf-brand"><span class="cf-brand-mark">CF</span><div>COMMENTARY <span>FRIENDS STUDIO</span></div></div>
+      <nav class="cf-nav">
+        <button type="button" class="btn" data-screen="today" aria-current="page">Today</button>
+        <span class="cf-nav-label text-small">Production</span>
+        <button type="button" class="btn" data-screen="story">1 · Story</button>
+        <button type="button" class="btn" data-screen="scripts">2 · Scripts</button>
+        <button type="button" class="btn" data-screen="audio">3 · Audio</button>
+        <button type="button" class="btn" data-screen="visuals">4 · Visuals</button>
+        <button type="button" class="btn" data-screen="veed">5 · VEED</button>
+        <button type="button" class="btn" data-screen="review">6 · Review</button>
+        <button type="button" class="btn" data-screen="publish">7 · Publish</button>
+        <span class="cf-nav-label text-small">System</span>
+        <button type="button" class="btn" data-screen="characters">Characters</button>
+      </nav>
+    </aside>
+
+    <main class="cf-main">
+      <header class="cf-topbar">
+        <div>
+          <h2 id="cf-screen-title">Today</h2>
+          <p class="text-small text-muted" id="cf-screen-subtitle">Daily newsroom and campaign overview</p>
+        </div>
+        <div class="cf-top-actions">
+          <div class="cf-progress-wrap" aria-label="Campaign completion">
+            <div class="cf-progress-label text-small"><span>Campaign progress</span><span id="cf-progress-text">0%</span></div>
+            <div class="cf-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="cf-progress-fill"></span></div>
+          </div>
+          <span class="viz-badge" id="cf-campaign-badge">MIJIČ • 4 VOICES</span>
+          <button type="button" class="btn btn-primary" id="cf-next-step">Review story</button>
+        </div>
+      </header>
+
+      <div class="cf-content">
+        <section class="cf-screen" data-panel="today">
+          <div class="cf-campaign-hero">
+            <div>
+              <div class="cf-eyebrow text-small">Active campaign · one story, four perspectives</div>
+              <h3>Mijič business connections</h3>
+              <p class="text-small text-muted" id="cf-hero-status">Brief ready for source review · 8 unique assets planned</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="cf-resume-campaign">Continue campaign</button>
+          </div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <div class="cf-section-head">
+                <div><h3>Story candidates</h3><p class="text-small text-muted">Ranked from approved sources</p></div>
+                <span class="viz-badge">3 new</span>
+              </div>
+              <div class="cf-row">
+                <div class="cf-row-main"><strong>Mijič business connections</strong><span class="text-small text-muted">RTV • accountability • high fit</span></div>
+                <button type="button" class="btn btn-primary" data-go="story">Review</button>
+              </div>
+              <div class="cf-row">
+                <div class="cf-row-main"><strong>Culture budget reductions</strong><span class="text-small text-muted">Multiple sources • medium sensitivity</span></div>
+                <button type="button" class="btn">Later</button>
+              </div>
+              <div class="cf-row">
+                <div class="cf-row-main"><strong>Hospital staffing warning</strong><span class="text-small text-muted">Needs second source</span></div>
+                <button type="button" class="btn">Check</button>
+              </div>
+            </div>
+            <div class="card cf-card-pad">
+              <div class="cf-section-head">
+                <div><h3>Campaign summary</h3><p class="text-small text-muted">One story • eight unique assets</p></div>
+              </div>
+              <div class="viz-grid">
+                <div class="cf-metric"><span class="text-small text-muted">Scripts</span><span class="viz-stat-value" id="cf-stat-scripts">0/4</span></div>
+                <div class="cf-metric"><span class="text-small text-muted">Audio</span><span class="viz-stat-value" id="cf-stat-audio">0/4</span></div>
+                <div class="cf-metric"><span class="text-small text-muted">Visual pairs</span><span class="viz-stat-value" id="cf-stat-visuals">0/4</span></div>
+              </div>
+              <p class="cf-inline-note text-small">Final output: four 9:16 videos, four 4:5 feed posts and up to twenty-four platform deliveries.</p>
+            </div>
+          </div>
+
+          <div class="card cf-card-pad cf-spaced">
+            <div class="cf-section-head"><div><h3>Production board</h3><p class="text-small text-muted">Click a character to continue its next incomplete stage</p></div></div>
+            <div class="cf-campaign-table" id="cf-production-board" aria-label="Character production status"></div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="story" hidden>
+          <div class="cf-section-head">
+            <div><h3>Mijič family company and shared contacts</h3><p class="text-small text-muted">Story brief • updated 17 July 2026</p></div>
+            <span class="viz-badge" id="cf-brief-status">DRAFT BRIEF</span>
+          </div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <label class="form-label" for="cf-angle">Core angle</label>
+              <textarea id="cf-angle" class="form-control" rows="3">New company name; same family orbit and contact trail. The public question is who continued to control the business.</textarea>
+              <label class="form-label" for="cf-consequence">Why it matters</label>
+              <textarea id="cf-consequence" class="form-control" rows="3">Workers were reportedly left unpaid, while linked business activity appears to continue under new structures. The commentary must preserve attribution and Mijič’s denial.</textarea>
+              <h4>Sources</h4>
+              <label class="form-check"><input class="form-check-input" type="checkbox" checked><span class="form-check-label">RTV Slovenija report</span></label>
+              <label class="form-check"><input class="form-check-input" type="checkbox" checked><span class="form-check-label">Business registry relationships</span></label>
+              <label class="form-check"><input class="form-check-input" type="checkbox" checked><span class="form-check-label">Mijič response and denial</span></label>
+            </div>
+            <div class="card cf-card-pad">
+              <h3>Claim ledger</h3>
+              <div class="cf-claim"><div><strong>Shared virtual business address</strong><div class="text-small text-muted">Approximately 600 companies at one mailbox address.</div></div><span class="viz-badge">CONTEXT</span></div>
+              <div class="cf-claim"><div><strong>Shared recruitment email</strong><div class="text-small text-muted">IM-Konstruktor and Progros reportedly used the same contact.</div></div><span class="viz-badge">REPORTED</span></div>
+              <div class="cf-claim"><div><strong>Family ownership changes</strong><div class="text-small text-muted">RTV reported IM-Konstruktor was purchased by Mijič’s mother.</div></div><span class="viz-badge">REPORTED</span></div>
+              <div class="cf-claim"><div><strong>Continued control</strong><div class="text-small text-muted">Media reported he may have continued business through linked entities. He denies this.</div></div><span class="viz-badge">DENIED</span></div>
+              <p class="cf-inline-note text-small">Rule: no script may turn a reported connection into proof of unlawful conduct.</p>
+            </div>
+          </div>
+          <div class="cf-actionbar">
+            <button type="button" class="btn" id="cf-save-brief">Save draft</button>
+            <button type="button" class="btn btn-primary" id="cf-lock-brief">Lock brief & write four</button>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="scripts" hidden>
+          <div class="cf-section-head"><div><h3>Four voices, one factual core</h3><p class="text-small text-muted">Approve each script independently</p></div><span class="viz-badge" id="cf-script-count">0/4 APPROVED</span></div>
+          <div class="cf-character-tabs" id="cf-script-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <label class="form-label" for="cf-script-editor">Commentary script</label>
+              <textarea id="cf-script-editor" class="form-control cf-editor"></textarea>
+              <div class="viz-row">
+                <span class="text-small" id="cf-word-count">0 words</span>
+                <span class="text-small" id="cf-duration">0 sec estimated</span>
+              </div>
+            </div>
+            <div class="card cf-card-pad">
+              <h3>Checks</h3>
+              <div class="cf-row"><span>Factual core preserved</span><span class="cf-ok">Pass</span></div>
+              <div class="cf-row"><span>Attribution and denial</span><span class="cf-ok">Pass</span></div>
+              <div class="cf-row"><span>Character opening/sign-off</span><span class="cf-ok" id="cf-opening-check">Pass</span></div>
+              <div class="cf-row"><span>Similarity to other scripts</span><span class="cf-ok">Low</span></div>
+              <div class="cf-row"><span>Runtime target</span><span id="cf-runtime-check">Check</span></div>
+              <label class="form-label" for="cf-script-part">Regenerate only</label>
+              <select id="cf-script-part" class="form-select">
+                <option>Hook</option><option>Central metaphor</option><option>Ending</option><option>Full script</option>
+              </select>
+              <div class="cf-actionbar"><button type="button" class="btn" id="cf-save-script">Save edit</button><button type="button" class="btn btn-primary" id="cf-approve-script">Approve script</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="audio" hidden>
+          <div class="cf-section-head"><div><h3>Performance recorder</h3><p class="text-small text-muted">Original performance is always retained</p></div><span class="viz-badge" id="cf-audio-character">BREDA</span></div>
+          <div class="cf-character-tabs" id="cf-audio-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="cf-stack">
+              <div class="cf-teleprompter" id="cf-teleprompter"></div>
+              <div class="viz-controls">
+                <button type="button" class="btn btn-primary" id="cf-record">Start recording</button>
+                <button type="button" class="btn" id="cf-reset-recording">Reset take</button>
+                <span class="viz-badge" id="cf-record-time">00:00</span>
+              </div>
+            </div>
+            <div class="card cf-card-pad">
+              <h3>Waveform and cleanup</h3>
+              <div class="cf-waveform" id="cf-waveform" aria-label="Simulated recording waveform"></div>
+              <div class="cf-row"><span>Leading/trailing silence</span><span id="cf-clean-silence">Waiting</span></div>
+              <div class="cf-row"><span>Loudness normalisation</span><span id="cf-clean-loudness">Waiting</span></div>
+              <div class="cf-row"><span>Clipping</span><span id="cf-clean-clipping">Waiting</span></div>
+              <label class="form-label" for="cf-voice-mode">Voice workflow</label>
+              <select id="cf-voice-mode" class="form-select"><option>Manual ElevenLabs handoff</option><option>ElevenLabs API when verified</option></select>
+              <div class="cf-actionbar"><button type="button" class="btn" id="cf-clean-audio">Clean audio</button><button type="button" class="btn btn-primary" id="cf-approve-audio">Approve audio</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="visuals" hidden>
+          <div class="cf-section-head"><div><h3>Portrait and feed pair</h3><p class="text-small text-muted">Reuse the approved visual before regenerating</p></div><span class="viz-badge" id="cf-visual-character">BREDA</span></div>
+          <div class="cf-character-tabs" id="cf-visual-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <div class="viz-controls">
+                <label class="form-check"><input class="form-check-input" type="radio" name="visual-mode" value="fast" checked><span class="form-check-label">Fast: approved neutral</span></label>
+                <label class="form-check"><input class="form-check-input" type="radio" name="visual-mode" value="creative"><span class="form-check-label">Creative: story setting</span></label>
+              </div>
+              <div class="cf-portrait-grid" id="cf-portrait-grid">
+                <button type="button" class="cf-portrait btn is-selected" data-portrait="A"><strong>Candidate A</strong><span class="text-small">Primary identity</span></button>
+                <button type="button" class="cf-portrait btn" data-portrait="B"><strong>Candidate B</strong><span class="text-small">Slight expression</span></button>
+                <button type="button" class="cf-portrait btn" data-portrait="C"><strong>Candidate C</strong><span class="text-small">Story-specific prop</span></button>
+              </div>
+              <p class="cf-inline-note text-small" id="cf-identity-note">Identity, apparent age and neutral setting passed.</p>
+            </div>
+            <div class="card cf-card-pad">
+              <h3>4:5 feed post</h3>
+              <div class="cf-feed-preview"><div class="cf-overlay" id="cf-overlay-preview">NOVO IME. STARA VPRAŠANJA.</div></div>
+              <label class="form-label" for="cf-overlay-text">Optional overlay</label>
+              <input id="cf-overlay-text" class="form-control" value="NOVO IME. STARA VPRAŠANJA.">
+              <label class="form-check"><input id="cf-overlay-enabled" class="form-check-input" type="checkbox" checked><span class="form-check-label">Include overlay</span></label>
+              <div class="cf-actionbar"><button type="button" class="btn">Generate alternatives</button><button type="button" class="btn btn-primary" id="cf-approve-visual">Approve portrait + feed</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="veed" hidden>
+          <div class="cf-section-head"><div><h3>Paid VEED account handoff</h3><p class="text-small text-muted">One controlled external step</p></div><span class="viz-badge" id="cf-veed-character">BREDA</span></div>
+          <div class="cf-character-tabs" id="cf-veed-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <h3>Prepared package</h3>
+              <div class="cf-row"><span><code>01_portrait_9x16.png</code></span><span class="cf-ok">Ready</span></div>
+              <div class="cf-row"><span><code>02_audio_clean.mp3</code></span><span class="cf-ok">Ready</span></div>
+              <div class="cf-row"><span><code>03_script.txt</code></span><span class="cf-ok">Final</span></div>
+              <div class="cf-row"><span><code>04_captions.srt</code></span><span class="cf-ok">Aligned</span></div>
+              <div class="cf-row"><span><code>05_post_copy.txt</code></span><span class="cf-ok">3 platforms</span></div>
+              <div class="cf-actionbar"><button type="button" class="btn" id="cf-download-manifest">Download manifest</button><a class="btn btn-primary" href="https://www.veed.io" target="_blank" rel="noreferrer">Open VEED</a></div>
+            </div>
+            <div class="card cf-card-pad">
+              <label class="cf-dropzone" for="cf-veed-upload">
+                <strong>Return the clean VEED MP4</strong>
+                <span class="text-small text-muted" id="cf-upload-label">Choose a test file to simulate the handoff</span>
+                <input id="cf-veed-upload" class="sr-only" type="file" accept="video/mp4">
+              </label>
+              <div class="cf-row"><span>Join parts at sentence boundary</span><span id="cf-veed-join">Waiting</span></div>
+              <div class="cf-row"><span>Captions and 9:16 master</span><span id="cf-veed-caption">Waiting</span></div>
+              <div class="cf-row"><span>1080 × 1920 final output</span><span id="cf-veed-master">Waiting</span></div>
+              <div class="cf-actionbar"><button type="button" class="btn btn-primary" id="cf-process-video">Process final video</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="review" hidden>
+          <div class="cf-section-head"><div><h3>Final editorial and technical review</h3><p class="text-small text-muted">Approval is required before delivery</p></div><span class="viz-badge" id="cf-review-character">BREDA</span></div>
+          <div class="cf-character-tabs" id="cf-review-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <div class="cf-video"><div class="cf-overlay">CAPTION PREVIEW</div></div>
+              <div class="viz-controls"><button type="button" class="btn" aria-pressed="true">Video</button><button type="button" class="btn" aria-pressed="false">Feed post</button></div>
+            </div>
+            <div class="card cf-card-pad">
+              <h3>Required checks</h3>
+              <div id="cf-review-checks"></div>
+              <div class="cf-actionbar"><button type="button" class="btn" id="cf-check-all">Check all for prototype</button><button type="button" class="btn btn-primary" id="cf-approve-final" disabled>Approve both assets</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="publish" hidden>
+          <div class="cf-section-head"><div><h3>Delivery control</h3><p class="text-small text-muted">Choose destination, asset and timing</p></div><span class="viz-badge" id="cf-publish-character">BREDA</span></div>
+          <div class="cf-character-tabs" id="cf-publish-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <h3>Destinations</h3>
+              <label class="form-check form-switch"><input id="cf-pub-fb" class="form-check-input" type="checkbox" checked><span class="form-check-label">Facebook Page • connected</span></label>
+              <label class="form-check form-switch"><input id="cf-pub-ig" class="form-check-input" type="checkbox" checked><span class="form-check-label">Instagram professional • connected</span></label>
+              <label class="form-check form-switch"><input id="cf-pub-tt" class="form-check-input" type="checkbox" checked><span class="form-check-label">TikTok • draft mode</span></label>
+              <h4>Assets</h4>
+              <label class="form-check"><input id="cf-pub-video" class="form-check-input" type="checkbox" checked><span class="form-check-label">Vertical video</span></label>
+              <label class="form-check"><input id="cf-pub-feed" class="form-check-input" type="checkbox" checked><span class="form-check-label">Feed portrait</span></label>
+              <label class="form-label" for="cf-when">Delivery</label>
+              <select id="cf-when" class="form-select"><option value="now">Publish now</option><option value="schedule">Schedule</option><option value="draft">Save/send drafts</option></select>
+              <input id="cf-schedule" class="form-control" type="datetime-local" hidden>
+            </div>
+            <div class="card cf-card-pad">
+              <label class="form-label" for="cf-caption">Platform caption</label>
+              <textarea id="cf-caption" class="form-control" rows="8">Novo podjetje, isti kontakti in stara vprašanja. Povzemamo poročanje RTV Slovenija; Boris Mijič nadaljevanje poslov zanika. Viri so shranjeni ob objavi.
+
+#CommentaryFriends #Slovenija</textarea>
+              <div class="viz-row"><span class="text-small text-muted" id="cf-caption-count">0 characters</span><span class="text-small">AI disclosure: enabled</span></div>
+              <div class="cf-actionbar"><button type="button" class="btn" id="cf-download-summary">Download MP4 + feed package</button><button type="button" class="btn btn-primary" id="cf-publish-action">Publish selected</button></div>
+              <div class="cf-stack" id="cf-publish-results" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="cf-screen" data-panel="characters" hidden>
+          <div class="cf-section-head"><div><h3>Versioned Character Bible</h3><p class="text-small text-muted">Permanent changes require approval</p></div><span class="viz-badge" id="cf-character-version">VERSION 1.0</span></div>
+          <div class="cf-character-tabs" id="cf-character-tabs"></div>
+          <div class="cf-grid-2">
+            <div class="card cf-card-pad">
+              <label class="form-label" for="cf-profile-age">Apparent age</label><input id="cf-profile-age" class="form-control">
+              <label class="form-label" for="cf-profile-opening">Opening</label><input id="cf-profile-opening" class="form-control">
+              <label class="form-label" for="cf-profile-signoff">Sign-off</label><input id="cf-profile-signoff" class="form-control">
+              <label class="form-label" for="cf-profile-setting">Neutral setting</label><textarea id="cf-profile-setting" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="card cf-card-pad">
+              <label class="form-label" for="cf-profile-metaphors">Metaphor engine</label><textarea id="cf-profile-metaphors" class="form-control" rows="4"></textarea>
+              <label class="form-label" for="cf-profile-rules">Non-negotiable rules</label><textarea id="cf-profile-rules" class="form-control" rows="5"></textarea>
+              <div class="cf-actionbar"><button type="button" class="btn">Compare version</button><button type="button" class="btn btn-primary" id="cf-save-profile">Save new version</button></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <div class="cf-toast text-small" id="cf-toast" role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <script>
+    (function () {
+      const root = document.getElementById('commentary-studio-prototype');
+      const $ = (selector) => root.querySelector(selector);
+      const $$ = (selector) => Array.from(root.querySelectorAll(selector));
+
+      const characters = {
+        breda: {
+          name: 'Breda', color: 'var(--cf-breda)', age: '75–85', opening: 'Breda tu. Evo.', signoff: 'Ajde, grem …',
+          setting: 'Warm, lived-in home or kitchen-table setting; practical and unpolished.',
+          metaphors: 'Household bills, food, neighbours, promises that fail the kitchen-table test.',
+          rules: 'Fixed opening. Calm, serious and mildly annoyed. Never a caricature or fake regional accent.',
+          script: 'Breda tu. Evo. Danes berem o podjetju družine poslanca Borisa Mijiča. Prijavljeno je na naslovu, kjer si en nabiralnik deli približno šeststo podjetij. To samo po sebi še ni nič nezakonitega. Ampak potem izveš, da sta novo podjetje in stari Progros iskala delavce prek istega elektronskega naslova. Progros pa je za sabo pustil blokirane račune, davčne dolgove in delavce brez plač. Po poročanju RTV je IM-Konstruktor kupila Mijičeva mati. Tudi dejavnost njegove žene se je preusmerila v gradbeništvo. Mijič nadaljevanje poslov zanika. Prav. Ampak če v kuhinji zamenjaš napis na kozarcu, marmelada pa ostane ista, je normalno vprašati, kdo jo je skuhal in kdo jo prodaja. Če je vse novo in ločeno, naj pokažejo pogodbe, ljudi in odgovornost. Ajde, grem pogledat, ali se je pri meni tudi kak kozarec sam preimenoval.'
+        },
+        gloria: {
+          name: 'Gloria', color: 'var(--cf-gloria)', age: '55–65', opening: 'Dragi moji …', signoff: 'Hvala za pozornost, z vami sem bila Gloria.',
+          setting: 'Elegant warm salon with wood, cards, crystals and restrained celestial details.',
+          metaphors: 'Astrology, tarot, retrogrades, orbits, aspects, omens and political karma.',
+          rules: 'Facts first, cosmic translation second. Warm, theatrical and slightly mischievous.',
+          script: 'Dragi moji, danes sem pogledala v poslovni horoskop in zagledala precej tesno družinsko konstelacijo. Na naslovu, kjer si en nabiralnik deli okoli šeststo podjetij, je prijavljen tudi IM-Konstruktor, podjetje družine poslanca Borisa Mijiča. Skupni poslovni naslov sam po sebi ni nič posebnega. Potem pa Merkur pokaže podrobnosti. IM-Konstruktor je delavce iskal prek istega elektronskega naslova kot Progros, podjetje z blokiranimi računi, davčnimi dolgovi in neplačanimi delavci. Po poročanju RTV je IM-Konstruktor kupila njegova mati. Tudi dejavnost njegove žene se je preusmerila v gradbeništvo. Mediji so poročali, da naj bi Mijič prek nje nadaljeval posle. Sam to zanika. V astrologiji temu še ne rečemo dokaz. Rečemo pa mu zelo natrpana karta, ki potrebuje pojasnilo. Novo podjetje. Ista družinska orbita. Isti kontakt. In precej starih vprašanj. Hvala za pozornost, z vami sem bila Gloria.'
+        },
+        rebeka: {
+          name: 'Rebeka', color: 'var(--cf-rebeka)', age: '25–35', opening: 'Topic-led hook', signoff: 'Čauči.',
+          setting: 'Permanent creative home office with desk, phone, art and warm practical lighting.',
+          metaphors: 'Profiles, logins, DMs, group chats, apps, bills, rent and internet culture.',
+          rules: 'Ljubljana casual urban Slovenian. Moderate Gen Z phrasing. Never too similar to Maks.',
+          script: 'NOV PROFIL, ISTI LOGIN. A se samo meni zdi, ali je zgodba Borisa Mijiča dobila še en backup profil? IM-Konstruktor, podjetje njegove družine, je prijavljeno na naslovu, kjer si en nabiralnik deli približno šeststo podjetij. Okej. Virtualne pisarne obstajajo. To samo po sebi ni drama. Ampak potem izveš, da sta IM-Konstruktor in Progros iskala delavce prek istega maila. Ja, tisti Progros z blokiranimi računi, davčnimi dolgovi in delavci brez plač. Po poročanju RTV je IM-Konstruktor kupila Mijičeva mati. Tudi dejavnost njegove žene se je preusmerila v gradbeništvo. Mediji so poročali, da naj bi Mijič prek nje nadaljeval posle. On to zanika. In ne, vse to še ni dokaz, da je bilo karkoli nezakonito. Je pa dovolj, da se vprašaš: a je to res nov začetek ali samo isti business model z drugim uporabniškim imenom? Ker če zamenjaš ime profila, mail in povezave pa ostanejo iste, to ni ravno hard reset. Čauči.'
+        },
+        maks: {
+          name: 'Maks', color: 'var(--cf-maks)', age: '25–35', opening: 'Topic-led opening', signoff: 'No fixed sign-off',
+          setting: 'Modern Ljubljana home, gym or neutral city environment; calm direct eye contact. Lola may appear occasionally.',
+          metaphors: 'Sport, teams, training plans, tactics, responsibility, Lego and measuring tools.',
+          rules: 'Calm, grounded and slightly unimpressed. One central metaphor. No over-performance.',
+          script: 'Dons sem prebral, da je podjetje družine poslanca Borisa Mijiča prijavljeno na naslovu, kjer si en nabiralnik deli okoli šeststo podjetij. Pa da ne bo pomote. Virtualni naslov sam po sebi ni problem. Če delaš na terenu in ne rabiš pisarne, je to čist normalno. Problem se začne drugje. IM-Konstruktor je gradbene delavce iskal prek istega maila, ki ga je uporabljalo Mijičevo podjetje z neplačanimi delavci, Progros. To še ni dokaz, da je bilo karkoli nezakonito. Ampak če klub sezono konča v minusu, potem pa se devet mesecev kasneje ista družina pojavi z novim imenom, je normalno pogledat, kdo še vedno drži žogo. Po poročanju RTV je IM-Konstruktor kupila Mijičeva mati. Tudi dejavnost njegove žene se je preusmerila v gradbeništvo. Mediji so poročali, da naj bi Mijič prek nje nadaljeval posle. Sam to zanika. Mogoče gre res za nov klub. Ampak potem naj pokažejo prestope, pogodbe in kdo vodi igro. Ne samo novega imena na dresu.'
+        }
+      };
+
+      const state = {
+        screen: 'today',
+        character: 'breda',
+        briefLocked: false,
+        recording: false,
+        recordSeconds: 0,
+        recordTimer: null,
+        toastTimer: null,
+        uploadReady: false,
+        profileVersion: 1,
+        selectedPortrait: 'A',
+        tracks: {}
+      };
+
+      Object.keys(characters).forEach((key) => {
+        state.tracks[key] = { script: false, audio: false, visual: false, veed: false, final: false, published: false };
+      });
+
+      const screenMeta = {
+        today: ['Today', 'Daily newsroom and campaign overview'],
+        story: ['Story Workspace', 'Sources, claim ledger and factual core'],
+        scripts: ['Script Lab', 'Four distinct voices from one approved brief'],
+        audio: ['Audio Studio', 'Record, clean and approve performances'],
+        visuals: ['Portrait & Feed Studio', 'One approved image, two formats'],
+        veed: ['VEED Handoff', 'Use the existing paid account'],
+        review: ['Final Review', 'Editorial, visual and technical QA'],
+        publish: ['Publish Center', 'Direct, schedule, draft or download'],
+        characters: ['Character Bible', 'Versioned editorial and visual rules']
+      };
+
+      function characterTabs(containerSelector, onSelect) {
+        const container = $(containerSelector);
+        container.innerHTML = '';
+        Object.entries(characters).forEach(([key, character]) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'btn';
+          button.dataset.character = key;
+          button.style.setProperty('--char', character.color);
+          button.setAttribute('aria-pressed', key === state.character ? 'true' : 'false');
+          button.innerHTML = '<span class="cf-avatar" aria-hidden="true">' + character.name.slice(0, 1) + '</span><span>' + character.name + '</span>';
+          button.addEventListener('click', () => {
+            state.character = key;
+            refreshTabs();
+            onSelect();
+          });
+          container.appendChild(button);
+        });
+      }
+
+      function refreshTabs() {
+        $$('.cf-character-tabs .btn').forEach((button) => {
+          button.setAttribute('aria-pressed', button.dataset.character === state.character ? 'true' : 'false');
+        });
+      }
+
+      function navigate(screen) {
+        state.screen = screen;
+        $$('.cf-screen').forEach((panel) => { panel.hidden = panel.dataset.panel !== screen; });
+        $$('.cf-nav [data-screen]').forEach((button) => {
+          if (button.dataset.screen === screen) button.setAttribute('aria-current', 'page');
+          else button.removeAttribute('aria-current');
+        });
+        $('#cf-screen-title').textContent = screenMeta[screen][0];
+        $('#cf-screen-subtitle').textContent = screenMeta[screen][1];
+        updateAll();
+      }
+
+      function countDone(field) {
+        return Object.values(state.tracks).filter((track) => track[field]).length;
+      }
+
+      function nextStage() {
+        if (!state.briefLocked) return 'story';
+        if (countDone('script') < 4) return 'scripts';
+        if (countDone('audio') < 4) return 'audio';
+        if (countDone('visual') < 4) return 'visuals';
+        if (countDone('veed') < 4) return 'veed';
+        if (countDone('final') < 4) return 'review';
+        if (countDone('published') < 4) return 'publish';
+        return 'today';
+      }
+
+      function showToast(message) {
+        const toast = $('#cf-toast');
+        toast.textContent = message;
+        toast.hidden = false;
+        if (state.toastTimer) clearTimeout(state.toastTimer);
+        state.toastTimer = setTimeout(() => { toast.hidden = true; }, 2600);
+      }
+
+      function updateProgress() {
+        const completed = (state.briefLocked ? 1 : 0) + ['script', 'audio', 'visual', 'veed', 'final', 'published'].reduce((sum, field) => sum + countDone(field), 0);
+        const percent = Math.round((completed / 25) * 100);
+        $('#cf-progress-text').textContent = percent + '%';
+        $('#cf-progress-fill').style.width = percent + '%';
+        $('.cf-progress').setAttribute('aria-valuenow', String(percent));
+        const next = nextStage();
+        const nextLabels = { story: 'Review story', scripts: 'Continue scripts', audio: 'Continue audio', visuals: 'Continue visuals', veed: 'Continue VEED', review: 'Continue review', publish: 'Deliver assets', today: 'Campaign complete' };
+        $('#cf-next-step').textContent = nextLabels[next];
+        $('#cf-next-step').disabled = next === 'today' && completed === 25;
+        $('#cf-hero-status').textContent = completed === 25 ? 'Campaign complete · 8 unique assets delivered' : screenMeta[next][0] + ' is next · ' + completed + ' of 25 approvals complete';
+      }
+
+      function stageLabel(track, field) {
+        if (track[field]) return ['Approved', 'done'];
+        const order = ['script', 'audio', 'visual', 'veed', 'final', 'published'];
+        const index = order.indexOf(field);
+        const previousDone = index === 0 || track[order[index - 1]];
+        return previousDone ? ['Ready', 'wait'] : ['—', ''];
+      }
+
+      function updateBoard() {
+        const board = $('#cf-production-board');
+        board.innerHTML = '<div class="cf-campaign-row cf-head"><span>Character</span><span>Script</span><span>Audio</span><span>Visual</span><span>VEED</span><span>Final</span><span>Publish</span></div>';
+        Object.entries(characters).forEach(([key, character]) => {
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.className = 'cf-campaign-row btn btn-ghost';
+          row.style.setProperty('--char', character.color);
+          const track = state.tracks[key];
+          row.innerHTML = '<span class="cf-track-name"><span class="cf-dot"></span>' + character.name + '</span>' +
+            ['script', 'audio', 'visual', 'veed', 'final', 'published'].map((field) => {
+              const label = stageLabel(track, field);
+              return '<span class="cf-status ' + label[1] + '">' + label[0] + '</span>';
+            }).join('');
+          row.addEventListener('click', () => {
+            state.character = key;
+            const next = !track.script ? 'scripts' : !track.audio ? 'audio' : !track.visual ? 'visuals' : !track.veed ? 'veed' : !track.final ? 'review' : 'publish';
+            navigate(next);
+          });
+          board.appendChild(row);
+        });
+      }
+
+      function updateStats() {
+        $('#cf-stat-scripts').textContent = countDone('script') + '/4';
+        $('#cf-stat-audio').textContent = countDone('audio') + '/4';
+        $('#cf-stat-visuals').textContent = countDone('visual') + '/4';
+        $('#cf-script-count').textContent = countDone('script') + '/4 APPROVED';
+        updateProgress();
+      }
+
+      function wordMetrics() {
+        const text = $('#cf-script-editor').value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        const seconds = Math.round(words / 3.25);
+        $('#cf-word-count').textContent = words + ' words';
+        $('#cf-duration').textContent = seconds + ' sec estimated';
+        const check = $('#cf-runtime-check');
+        check.textContent = seconds >= 45 && seconds <= 60 ? 'Pass' : seconds > 60 ? 'Too long' : 'Short';
+        check.className = seconds >= 45 && seconds <= 60 ? 'cf-ok' : 'cf-danger';
+      }
+
+      function loadScript() {
+        const character = characters[state.character];
+        $('#cf-script-editor').value = character.script;
+        $('#cf-opening-check').textContent = 'Pass';
+        $('#cf-approve-script').textContent = state.tracks[state.character].script ? 'Approved' : 'Approve script';
+        wordMetrics();
+      }
+
+      function loadAudio() {
+        const character = characters[state.character];
+        $('#cf-audio-character').textContent = character.name.toUpperCase();
+        $('#cf-teleprompter').textContent = character.script;
+        $('#cf-approve-audio').textContent = state.tracks[state.character].audio ? 'Approved' : 'Approve audio';
+      }
+
+      function loadVisual() {
+        const character = characters[state.character];
+        $('#cf-visual-character').textContent = character.name.toUpperCase();
+        $('#cf-identity-note').textContent = character.name + ': identity, apparent age ' + character.age + ' and neutral-setting rules passed.';
+        $('#cf-approve-visual').textContent = state.tracks[state.character].visual ? 'Approved' : 'Approve portrait + feed';
+      }
+
+      function loadVeed() {
+        const character = characters[state.character];
+        $('#cf-veed-character').textContent = character.name.toUpperCase();
+        $('#cf-process-video').textContent = state.tracks[state.character].veed ? 'Final video ready' : 'Process final video';
+      }
+
+      function buildReviewChecks() {
+        const container = $('#cf-review-checks');
+        const labels = ['Correct character identity and apparent age', 'Correct voice and acceptable lip sync', 'No unsupported factual claims', 'Attribution and denial preserved', 'Slovenian captions checked', '9:16 safe zones passed', 'Duration within target', 'Source, alt text and disclosure present'];
+        container.innerHTML = '';
+        labels.forEach((label, index) => {
+          const wrapper = document.createElement('label');
+          wrapper.className = 'form-check';
+          wrapper.innerHTML = '<input class="form-check-input cf-review-check" type="checkbox" id="cf-review-' + index + '"><span class="form-check-label">' + label + '</span>';
+          container.appendChild(wrapper);
+        });
+        $$('.cf-review-check').forEach((checkbox) => checkbox.addEventListener('change', reviewReady));
+      }
+
+      function reviewReady() {
+        const checks = $$('.cf-review-check');
+        $('#cf-approve-final').disabled = !checks.every((checkbox) => checkbox.checked);
+      }
+
+      function loadReview() {
+        const character = characters[state.character];
+        $('#cf-review-character').textContent = character.name.toUpperCase();
+        $('#cf-approve-final').textContent = state.tracks[state.character].final ? 'Approved' : 'Approve both assets';
+      }
+
+      function loadPublish() {
+        const character = characters[state.character];
+        $('#cf-publish-character').textContent = character.name.toUpperCase();
+      }
+
+      function loadProfile() {
+        const character = characters[state.character];
+        $('#cf-profile-age').value = character.age;
+        $('#cf-profile-opening').value = character.opening;
+        $('#cf-profile-signoff').value = character.signoff;
+        $('#cf-profile-setting').value = character.setting;
+        $('#cf-profile-metaphors').value = character.metaphors;
+        $('#cf-profile-rules').value = character.rules;
+        $('#cf-character-version').textContent = 'VERSION ' + state.profileVersion.toFixed(1);
+      }
+
+      function updateAll() {
+        updateStats();
+        updateBoard();
+        refreshTabs();
+        loadScript();
+        loadAudio();
+        loadVisual();
+        loadVeed();
+        loadReview();
+        loadPublish();
+        loadProfile();
+      }
+
+      function downloadText(filename, text) {
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      $$('.cf-nav [data-screen]').forEach((button) => button.addEventListener('click', () => navigate(button.dataset.screen)));
+      $$('[data-go]').forEach((button) => button.addEventListener('click', () => navigate(button.dataset.go)));
+      $('#cf-next-step').addEventListener('click', () => navigate(nextStage()));
+      $('#cf-resume-campaign').addEventListener('click', () => navigate(nextStage()));
+
+      characterTabs('#cf-script-tabs', loadScript);
+      characterTabs('#cf-audio-tabs', loadAudio);
+      characterTabs('#cf-visual-tabs', loadVisual);
+      characterTabs('#cf-veed-tabs', loadVeed);
+      characterTabs('#cf-review-tabs', loadReview);
+      characterTabs('#cf-publish-tabs', loadPublish);
+      characterTabs('#cf-character-tabs', loadProfile);
+
+      $('#cf-lock-brief').addEventListener('click', () => {
+        state.briefLocked = true;
+        $('#cf-brief-status').textContent = 'BRIEF LOCKED';
+        showToast('Factual core locked. Four character drafts are ready.');
+        navigate('scripts');
+      });
+      $('#cf-save-brief').addEventListener('click', () => { $('#cf-brief-status').textContent = 'DRAFT SAVED'; showToast('Story brief saved.'); });
+      $('#cf-script-editor').addEventListener('input', wordMetrics);
+      $('#cf-save-script').addEventListener('click', () => { characters[state.character].script = $('#cf-script-editor').value; });
+      $('#cf-approve-script').addEventListener('click', () => {
+        characters[state.character].script = $('#cf-script-editor').value;
+        state.tracks[state.character].script = true;
+        showToast(characters[state.character].name + ' script approved.');
+        updateAll();
+      });
+
+      for (let i = 0; i < 56; i += 1) {
+        const bar = document.createElement('span');
+        bar.style.setProperty('--h', String((i * 19) % 58));
+        $('#cf-waveform').appendChild(bar);
+      }
+
+      function updateRecordTime() {
+        const min = String(Math.floor(state.recordSeconds / 60)).padStart(2, '0');
+        const sec = String(state.recordSeconds % 60).padStart(2, '0');
+        $('#cf-record-time').textContent = min + ':' + sec;
+      }
+
+      $('#cf-record').addEventListener('click', () => {
+        state.recording = !state.recording;
+        $('#cf-record').textContent = state.recording ? 'Stop recording' : 'Resume recording';
+        if (state.recording) {
+          state.recordTimer = setInterval(() => { state.recordSeconds += 1; updateRecordTime(); }, 1000);
+        } else {
+          clearInterval(state.recordTimer);
+          state.recordTimer = null;
+        }
+      });
+      $('#cf-reset-recording').addEventListener('click', () => {
+        if (state.recordTimer) clearInterval(state.recordTimer);
+        state.recordTimer = null; state.recording = false; state.recordSeconds = 0;
+        $('#cf-record').textContent = 'Start recording'; updateRecordTime();
+      });
+      $('#cf-clean-audio').addEventListener('click', () => {
+        $('#cf-clean-silence').textContent = 'Removed';
+        $('#cf-clean-loudness').textContent = 'Normalised';
+        $('#cf-clean-clipping').textContent = 'None';
+      });
+      $('#cf-approve-audio').addEventListener('click', () => { state.tracks[state.character].audio = true; showToast(characters[state.character].name + ' audio approved.'); updateAll(); });
+
+      $$('#cf-portrait-grid [data-portrait]').forEach((button) => button.addEventListener('click', () => {
+        state.selectedPortrait = button.dataset.portrait;
+        $$('#cf-portrait-grid [data-portrait]').forEach((peer) => peer.classList.toggle('is-selected', peer === button));
+      }));
+      function overlayPreview() {
+        const enabled = $('#cf-overlay-enabled').checked;
+        $('#cf-overlay-preview').hidden = !enabled;
+        $('#cf-overlay-preview').textContent = $('#cf-overlay-text').value || ' ';
+      }
+      $('#cf-overlay-text').addEventListener('input', overlayPreview);
+      $('#cf-overlay-enabled').addEventListener('change', overlayPreview);
+      $('#cf-approve-visual').addEventListener('click', () => { state.tracks[state.character].visual = true; showToast(characters[state.character].name + ' portrait and feed post approved.'); updateAll(); });
+
+      $('#cf-download-manifest').addEventListener('click', () => {
+        const c = characters[state.character];
+        downloadText('veed-package-' + state.character + '.txt', 'COMMENTARY FRIENDS VEED PACKAGE\nCharacter: ' + c.name + '\nPortrait: approved candidate ' + state.selectedPortrait + '\nAudio: clean master\nScript: approved\nTarget: 9:16, approximately one minute');
+      });
+      $('#cf-veed-upload').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        state.uploadReady = Boolean(file);
+        $('#cf-upload-label').textContent = file ? file.name + ' selected' : 'Choose a test file to simulate the handoff';
+      });
+      $('#cf-process-video').addEventListener('click', () => {
+        if (!state.uploadReady) {
+          $('#cf-upload-label').textContent = 'Select an MP4 first';
+          return;
+        }
+        $('#cf-veed-join').textContent = 'Complete';
+        $('#cf-veed-caption').textContent = 'Complete';
+        $('#cf-veed-master').textContent = 'Ready';
+        state.tracks[state.character].veed = true;
+        showToast(characters[state.character].name + ' final MP4 processed.');
+        updateAll();
+      });
+
+      buildReviewChecks();
+      $('#cf-check-all').addEventListener('click', () => { $$('.cf-review-check').forEach((checkbox) => { checkbox.checked = true; }); reviewReady(); });
+      $('#cf-approve-final').addEventListener('click', () => { state.tracks[state.character].final = true; showToast(characters[state.character].name + ' assets passed final review.'); updateAll(); });
+
+      $('#cf-when').addEventListener('change', () => {
+        $('#cf-schedule').hidden = $('#cf-when').value !== 'schedule';
+        $('#cf-publish-action').textContent = $('#cf-when').value === 'schedule' ? 'Schedule selected' : $('#cf-when').value === 'draft' ? 'Create drafts' : 'Publish selected';
+      });
+      $('#cf-caption').addEventListener('input', () => { $('#cf-caption-count').textContent = $('#cf-caption').value.length + ' characters'; });
+      $('#cf-caption').dispatchEvent(new Event('input'));
+      $('#cf-publish-action').addEventListener('click', () => {
+        const destinations = [];
+        if ($('#cf-pub-fb').checked) destinations.push(['Facebook', 'Ready']);
+        if ($('#cf-pub-ig').checked) destinations.push(['Instagram', 'Ready']);
+        if ($('#cf-pub-tt').checked) destinations.push(['TikTok', 'Draft delivered']);
+        const container = $('#cf-publish-results');
+        container.innerHTML = '';
+        destinations.forEach((item) => {
+          const div = document.createElement('div');
+          div.className = 'cf-publish-result text-small';
+          div.textContent = item[0] + ': ' + item[1];
+          container.appendChild(div);
+        });
+        state.tracks[state.character].published = true;
+        showToast(characters[state.character].name + ' delivery actions completed.');
+        updateAll();
+      });
+      $('#cf-download-summary').addEventListener('click', () => {
+        downloadText('delivery-package-' + state.character + '.json', JSON.stringify({ story: 'Mijič business connections', character: characters[state.character].name, included: { mp4: $('#cf-pub-video').checked, feedPost: $('#cf-pub-feed').checked, captionsSrt: true, platformCopy: true, sourceRecord: true }, caption: $('#cf-caption').value }, null, 2));
+        showToast(characters[state.character].name + ' download package prepared.');
+      });
+
+      $('#cf-save-profile').addEventListener('click', () => {
+        const character = characters[state.character];
+        character.age = $('#cf-profile-age').value;
+        character.opening = $('#cf-profile-opening').value;
+        character.signoff = $('#cf-profile-signoff').value;
+        character.setting = $('#cf-profile-setting').value;
+        character.metaphors = $('#cf-profile-metaphors').value;
+        character.rules = $('#cf-profile-rules').value;
+        state.profileVersion = Number((state.profileVersion + 0.1).toFixed(1));
+        showToast(character.name + ' profile saved as version ' + state.profileVersion.toFixed(1) + '.');
+        loadProfile();
+      });
+
+      updateAll();
+    }());
+  </script>
+</div>
+</body>
+</html>
